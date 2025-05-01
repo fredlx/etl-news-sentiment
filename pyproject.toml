@@ -1,0 +1,35 @@
+# run pip install -e .
+
+[project]
+name = "etl_project"
+version = "0.1.0"
+description = "Multi-source ETL pipeline"
+dependencies = [
+    "beautifulsoup4",
+    "pandas",
+    "nltk",
+    "numpy",
+    "requests",
+    "scikit-learn",
+    "scipy",
+    "sentence-transformers",
+    "transformers",
+    "torch",
+    "tqdm",
+    "pyarrow",
+    "PyYAML",
+]
+
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "wheel",
+    "cython"
+]
+# remove cython implementation
+
+
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["extractors*", "transformers_project*", "loaders*", "pipelines*", "utils*", "config*"]

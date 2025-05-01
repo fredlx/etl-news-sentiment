@@ -1,0 +1,66 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.env/
+*.env
+.venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs/editors
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Project folders
+dev/__pycache__/
+prod/__pycache__/
+
+# Output/data
+*.csv
+*.parquet
+*.pkl
+*.json
+
+# Build artifacts
+/build/
+/dist/
+*.egg-info/
+
+# Cython files (source and compiled)
+*.c
+*.cpp
+#*.pyx
+*.pyd
+*.so
+
+# my tools
+reports/
+/scan_*.py
+run_imports_scans.py
+summarize_folder_size.py
+clear_log.py
+
+# other excludes
+config/config.ini
+utils/*_2.py
+extractors/*_2.py
+transformers_project/*_2.py
+loaders/*_2.py
+pipelines/*_2.py
+data/
+notebooks/
+
+
+
