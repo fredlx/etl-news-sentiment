@@ -3,10 +3,11 @@ __pycache__/
 *.py[cod]
 
 # Virtual environments
+.venv/
 venv/
 .env/
 *.env
-.venv/
+
 
 # OS files
 .DS_Store
@@ -34,7 +35,7 @@ prod/__pycache__/
 *.json
 
 # Build artifacts
-/build/
+build/
 /dist/
 *.egg-info/
 
@@ -45,22 +46,26 @@ prod/__pycache__/
 *.pyd
 *.so
 
-# my tools
+# Custom tools
 reports/
 /scan_*.py
 run_imports_scans.py
 summarize_folder_size.py
 clear_log.py
 
-# other excludes
+# Custom excludes
+data/
+notebooks/
 config/config.ini
+project_structure.txt
+
+# Internal redundant scripts
 utils/*_2.py
 extractors/*_2.py
 transformers_project/*_2.py
 loaders/*_2.py
 pipelines/*_2.py
-data/
-notebooks/
+
 
 
 

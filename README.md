@@ -1,76 +1,94 @@
+In progress
+
 # Project structure
 
-(needs update)
-etl-news-sentiment/
-├── extractors/
-│   ├── __init__.py
-│   ├── alpha_vantage.py
-│   └── newsdata.py
-├── transformers/
-│   ├── __init__.py
-|   ├── alpha_vantage.py
-|   ├── newsdata.py
-│   └── shared_transforms.py
-├── loaders/
-│   ├── __init__.py
-|   ├── load_to_csv.py
-│   └── load_to_db.py
-├── pipelines/
-│   ├── __init__.py
-│   ├── run_alpha_vantage.py
-│   └── run_newsdata.py
-├── utils/
-│   ├── __init__.py
-│   ├── helpers.py
-│   ├── nltk_tools.py
-│   └── logger.py  (missing)
-├── config/
-│   ├── __init__.py
-|   ├── config.ini
-│   └── constants.py
-├── data/
-|   ├── raw/
-|   ├── processed/
-│   └── backup/
-├── notebooks/
-|   ├── notebook1.ipynb
-|   ├── notebook2.ipynb
-│   └── (...)
-├── __init__.py
-├── pyproject.toml  (include = ["extractors*", "transformers*", "loaders*", "pipelines*", "utils*", "config*"])
-├── README.md
-└── main.py
+config/
+utils/
+extractors/
+transformers_project/
+loaders/
+pipelines/
+data/
+tests/
+logs/
 
 
-**pyproject.toml**
-- Control Center of the project
-- Note: Needs to be aware of cython
-- $ python3 pip install -e . (but first recompile setup.py!)
+### General Design Notes
 
-**setup.py**
-- Set to find .pyx files in /transformers/resamplers/ to compile
-- Run <bash> python3 setup.py build_ext --inplace on every change/update of .pyx to recompile
-- /transformers/resamplers/\_\_init\_\_.py in place to run resamplers as module
-- resamplers handle alpha_vantage (ticker_sentiment) for now
-- $ python3 setup.py build_ext --inplace
+- Each **source** has its own extractor and corresponding data folder.
+- Transformers are organized per source.
+- Resamplers (Cython-optimized, currently **not used**) are available.
+- Sentiment scores are computed **per source**.
+- Resampling is available for individual sources and merged sources.
 
-**logger**
-- All logging in one place (logs/etl.log)
-- Implementation of source-based logger + general logger available but not active
 
-**nltk**
-- All nltk tools in sentimwnt_scores.py
+### API notes
 
-**semantic_utils.py**
-- For semantic similarity
+- Alpha Vantage limitations: x per day
+- Newsdata limitations: 30 requests per 15 min, x per day
 
-**normalizers.py**
-- functions for dtype normalization
 
-**validators.py**
-- perform validation ops and raise on errors
+### `pyproject.toml`
 
-**my_python_tools**
+- Implemented and acts as the **control center** of the project.
+- requirements.txt is also available
+- If Cython is used, make sure it’s listed as a dependency.
+- Requires rebuilding Cython with setup.py first.
+- Install project in editable mode with:
+  ```bash
+  python3 -m pip install -e .
+
+
+### `setup.py`
+
+- Used for Cython implementation.
+- Compiles .pyx files in /transformers_project/resamplers/.
+- \_\_init\_\_.py present to expose resamplers as a module
+- Currently supports Alpha Vantage ticker_sentiment.
+- Recompile .pyx after every change in .pyx:
+  ```bash
+  python3 setup.py build_ext --inplace
+
+
+### swifter
+
+- Optional optimization for .apply()
+- Check for bottlenecks first
+- Not in use currently
+
+
+### logger
+
+- Central logging to logs/etl.log
+- Source-specific and general logger implemented (in logger_2.py), but currently inactive.
+
+
+### nltk
+
+- nltk_setup.py ensures required resources are installed.
+- All NLTK usage centralized in sentiment_scores.py
+
+
+### `semantic_tools.py`
+
+- Handles semantic similarity:
+    - SentenceTransformer for embeddings
+    - cosine_similarity from sklearn
+- Used to remove duplicated sentences from texts (description) merges
+- Notes: SequenceMatcher gave inconsistent results.
+
+
+### `normalizers.py`
+
+- Contains data type normalization helpers.
+- Unit tests available via pytest (pytest tests/test_normalizers.py)
+
+
+### `validators.py`
+
+- Performs schema/logic validations.
+- Raises exceptions on failure.
+- Unit tests available via pytest (pytest tests/test_validators.py)
 
 
 
